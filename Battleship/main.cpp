@@ -57,8 +57,70 @@ void generateBoats(char board[][26], int x[], int y[])
 	int vh[5];
 
 	//CARRIER - #####
+	vh[0] = generateRandomNumber(maxValue);
+	if (vh[0] == 2) //Then the boat will be vertical
+	{
+		if (y[0] == 25 || y[0] == 24 || y[0] == 23 || y[0] == 22)
+			y[0] = 21;
+
+		for (int i = 0; i < 5; i++)
+			board[x[1]][y[1] + i] = '#';
+	}
+	else //The boat will be horizontal
+	{
+		if (x[0] == 25 || x[0] == 24 || x[0] == 23 || x[0] == 22)
+			x[0] = 21;
+
+		for (int i = 0; i < 5; i++)
+			board[x[1] + i][y[1]] = '#';
+	}
 
 	//BATTLESHIP - ####
+	vh[1] = generateRandomNumber(maxValue);
+	if (vh[1] == 2) //Then the boat will be vertical
+	{
+		if (y[1] == 25 || y[1] == 24  || y[1] == 23)
+			y[1] = 22;
+
+		for (int i = 0; i < 4; i++)
+		{
+			if (board[x[1]][y[1] + i] == '#')
+			{
+				cout << "Battleship moved!" << endl;
+				if (x[1] >= 22)
+					board[x[1] - 1][y[1] + i] = '#';
+				else
+					board[x[1] + 1][y[1] + i] = '#';
+			}
+			else
+			{
+				cout << "Battleship did not move!" << endl;
+				board[x[1]][y[1] + i] = '#';
+			}
+		}
+	}
+	else //The boat will be horizontal
+	{
+		if (x[1] == 25 || x[1] == 24 || x[1] == 23)
+			x[1] = 22;
+
+		for (int i = 0; i < 4; i++)
+		{
+			if (board[x[1] + i][y[1]] == '#')
+			{
+				cout << "Battleship moved!" << endl;
+				if (y[1] >= 22)
+					board[x[1] + i][y[1] - 1] = '#';
+				else
+					board[x[1] + i][y[1] + 1] = '#';
+			}
+			else
+			{
+				cout << "Battleship did not move!" << endl;
+				board[x[1] + i][y[1]] = '#';
+			}
+		}
+	}
 
 	//DESTROYER - ###
 	vh[2] = generateRandomNumber(maxValue);
@@ -69,7 +131,6 @@ void generateBoats(char board[][26], int x[], int y[])
 
 		for (int i = 0; i < 3; i++)
 			board[x[2]][y[2] + i] = '#';
-
 	}
 	else //The boat will be horizontal
 	{
@@ -89,7 +150,6 @@ void generateBoats(char board[][26], int x[], int y[])
 
 		for (int i = 0; i < 3; i++)
 			board[x[3]][y[3] + i] = '#';
-
 	}
 	else //The boat will be horizontal
 	{
