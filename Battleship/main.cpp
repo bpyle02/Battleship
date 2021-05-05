@@ -42,9 +42,9 @@ void createBoard(char board[][26], char userBoard[][26])
 	for (int row = 1; row < 26; row++)
 		for (int col = 1; col < 26; col++)
 		{
-			userBoard[row][col] = board[row][col];
-			//userBoard[row][col] = '~';
-			cout << userBoard[row][col];
+			userBoard[col][row] = board[col][row];
+			//userBoard[col][row] = '~';
+			cout << userBoard[col][row];
 			cout << "  ";
 			if (col == 25)
 				cout << endl;
@@ -55,6 +55,13 @@ void generateBoats(char board[][26], int x[], int y[])
 {
 	int maxValue = 2;
 	int vh[5];
+	bool move = false;
+	int i = 0;
+
+	for (int i = 0; i < 5; i++)
+	{
+		cout << x[i] << ", " << y[i] << endl;
+	}
 
 	//CARRIER - #####
 	vh[0] = generateRandomNumber(maxValue);
@@ -64,7 +71,7 @@ void generateBoats(char board[][26], int x[], int y[])
 			y[0] = 21;
 
 		for (int i = 0; i < 5; i++)
-			board[x[1]][y[1] + i] = '#';
+			board[x[0]][y[0] + i] = '#';
 	}
 	else //The boat will be horizontal
 	{
@@ -72,7 +79,7 @@ void generateBoats(char board[][26], int x[], int y[])
 			x[0] = 21;
 
 		for (int i = 0; i < 5; i++)
-			board[x[1] + i][y[1]] = '#';
+			board[x[0] + i][y[0]] = '#';
 	}
 
 	//BATTLESHIP - ####
@@ -82,44 +89,70 @@ void generateBoats(char board[][26], int x[], int y[])
 		if (y[1] == 25 || y[1] == 24  || y[1] == 23)
 			y[1] = 22;
 
-		for (int i = 0; i < 4; i++)
+		while (i < 4)
 		{
 			if (board[x[1]][y[1] + i] == '#')
 			{
-				cout << "Battleship moved!" << endl;
-				if (x[1] >= 22)
-					board[x[1] - 1][y[1] + i] = '#';
-				else
-					board[x[1] + 1][y[1] + i] = '#';
+				move = true;
+				i = 4;
 			}
 			else
 			{
-				cout << "Battleship did not move!" << endl;
-				board[x[1]][y[1] + i] = '#';
+				move = false;
+				i++;
 			}
 		}
+		i = 0;
+		if (move == true)
+		{
+			cout << "Battleship moved!" << endl;
+			x[1] = generateRandomNumber(25);
+			y[1] = generateRandomNumber(25);
+			if (y[1] == 25 || y[1] == 24 || y[1] == 23)
+				y[1] = 22;
+			cout << x[1] << ", " << y[1] << endl;
+		}
+		else
+			cout << "Battleship did not move!" << endl;
+
+		move = false;
+		for (i = 0; i < 4; i++)
+			board[x[1]][y[1] + i] = '#';
 	}
 	else //The boat will be horizontal
 	{
 		if (x[1] == 25 || x[1] == 24 || x[1] == 23)
 			x[1] = 22;
 
-		for (int i = 0; i < 4; i++)
+		while (i < 4)
 		{
 			if (board[x[1] + i][y[1]] == '#')
 			{
-				cout << "Battleship moved!" << endl;
-				if (y[1] >= 22)
-					board[x[1] + i][y[1] - 1] = '#';
-				else
-					board[x[1] + i][y[1] + 1] = '#';
+				move = true;
+				i = 4;
 			}
 			else
 			{
-				cout << "Battleship did not move!" << endl;
-				board[x[1] + i][y[1]] = '#';
+				move = false;
+				i++;
 			}
 		}
+		i = 0;
+		if (move == true)
+		{
+			cout << "Battleship moved!" << endl;
+			x[1] = generateRandomNumber(25);
+			y[1] = generateRandomNumber(25);
+			if (x[1] == 25 || x[1] == 24 || x[1] == 23)
+				x[1] = 22;
+			cout << x[1] << ", " << y[1] << endl;
+		}
+		else
+			cout << "Battleship did not move!" << endl;
+
+		move = false;
+		for (i = 0; i < 4; i++)
+			board[x[1] + i][y[1]] = '#';
 	}
 
 	//DESTROYER - ###
@@ -129,7 +162,34 @@ void generateBoats(char board[][26], int x[], int y[])
 		if (y[2] == 25 || y[2] == 24)
 			y[2] = 23;
 
-		for (int i = 0; i < 3; i++)
+		while (i < 3)
+		{
+			if (board[x[2]][y[2] + i] == '#')
+			{
+				move = true;
+				i = 3;
+			}
+			else
+			{
+				move = false;
+				i++;
+			}
+		}
+		i = 0;
+		if (move == true)
+		{
+			cout << "Destroyer moved!" << endl;
+			x[2] = generateRandomNumber(25);
+			y[2] = generateRandomNumber(25);
+			if (y[2] == 25 || y[2] == 24)
+				y[2] = 22;
+			cout << x[2] << ", " << y[2] << endl;
+		}
+		else
+			cout << "Destroyer did not move!" << endl;
+
+		move = false;
+		for (i = 0; i < 3; i++)
 			board[x[2]][y[2] + i] = '#';
 	}
 	else //The boat will be horizontal
@@ -137,7 +197,34 @@ void generateBoats(char board[][26], int x[], int y[])
 		if (x[2] == 25 || x[2] == 24)
 			x[2] = 23;
 
-		for (int i = 0; i < 3; i++)
+		while (i < 3)
+		{
+			if (board[x[2] + i][y[2]] == '#')
+			{
+				move = true;
+				i = 3;
+			}
+			else
+			{
+				move = false;
+				i++;
+			}
+		}
+		i = 0;
+		if (move == true)
+		{
+			cout << "Destroyer moved!" << endl;
+			x[2] = generateRandomNumber(25);
+			y[2] = generateRandomNumber(25);
+			if (x[2] == 25 || x[2] == 24)
+				x[2] = 22;
+			cout << x[2] << ", " << y[2] << endl;
+		}
+		else
+			cout << "Destroyer did not move!" << endl;
+
+		move = false;
+		for (i = 0; i < 3; i++)
 			board[x[2] + i][y[2]] = '#';
 	}
 
@@ -148,7 +235,34 @@ void generateBoats(char board[][26], int x[], int y[])
 		if (y[3] == 25 || y[3] == 24)
 			y[3] = 23;
 
-		for (int i = 0; i < 3; i++)
+		while (i < 3)
+		{
+			if (board[x[3]][y[3] + i] == '#')
+			{
+				move = true;
+				i = 3;
+			}
+			else
+			{
+				move = false;
+				i++;
+			}
+		}
+		i = 0;
+		if (move == true)
+		{
+			cout << "Sub moved!" << endl;
+			x[3] = generateRandomNumber(25);
+			y[3] = generateRandomNumber(25);
+			if (y[3] == 25 || y[3] == 24)
+				y[3] = 22;
+			cout << x[3] << ", " << y[3] << endl;
+		}
+		else
+			cout << "Sub did not move!" << endl;
+
+		move = false;
+		for (i = 0; i < 3; i++)
 			board[x[3]][y[3] + i] = '#';
 	}
 	else //The boat will be horizontal
@@ -156,7 +270,34 @@ void generateBoats(char board[][26], int x[], int y[])
 		if (x[3] == 25 || x[3] == 24)
 			x[3] = 23;
 
-		for (int i = 0; i < 3; i++)
+		while (i < 3)
+		{
+			if (board[x[3] + i][y[3]] == '#')
+			{
+				move = true;
+				i = 3;
+			}
+			else
+			{
+				move = false;
+				i++;
+			}
+		}
+		i = 0;
+		if (move == true)
+		{
+			cout << "Sub moved!" << endl;
+			x[3] = generateRandomNumber(25);
+			y[3] = generateRandomNumber(25);
+			if (x[3] == 25 || x[3] == 24)
+				x[3] = 22;
+			cout << x[3] << ", " << y[3] << endl;
+		}
+		else
+			cout << "Sub did not move!" << endl;
+
+		move = false;
+		for (i = 0; i < 3; i++)
 			board[x[3] + i][y[3]] = '#';
 	}
 
@@ -167,18 +308,73 @@ void generateBoats(char board[][26], int x[], int y[])
 		if (y[4] == 25)
 			y[4] = 24;
 
-		board[x[4]][y[4]] = '#';
-		board[x[4]][y[4] + 1] = '#';
+		while (i < 2)
+		{
+			if (board[x[4]][y[4] + i] == '#')
+			{
+				move = true;
+				i = 2;
+			}
+			else
+			{
+				move = false;
+				i++;
+			}
+		}
+		i = 0;
+		if (move == true)
+		{
+			cout << "Patrol Boat moved!" << endl;
+			x[4] = generateRandomNumber(25);
+			y[4] = generateRandomNumber(25);
+			if (y[4] == 25)
+				y[4] = 24;
+			cout << x[4] << ", " << y[4] << endl;
+		}
+		else
+			cout << "Patrol Boat did not move!" << endl;
+
+		move = false;
+		for (i = 0; i < 2; i++)
+			board[x[4]][y[4] + i] = '#';
 	}
 	else //The boat will be horizontal
 	{
 		if (x[4] == 25)
 			x[4] = 24;
 
-		board[x[4]][y[4]] = '#';
-		board[x[4] + 1][y[4]] = '#';
+		while (i < 2)
+		{
+			if (board[x[4] + i][y[4]] == '#')
+			{
+				move = true;
+				i = 2;
+			}
+			else
+			{
+				move = false;
+				i++;
+			}
+		}
+		i = 0;
+		if (move == true)
+		{
+			cout << "Patrol Boat moved!" << endl;
+			x[4] = generateRandomNumber(25);
+			y[4] = generateRandomNumber(25);
+			if (x[4] == 25)
+				x[4] = 22;
+			cout << x[4] << ", " << y[4] << endl;
+		}
+		else
+			cout << "Patrol Boat did not move!" << endl;
+
+		move = false;
+		for (i = 0; i < 2; i++)
+			board[x[4] + i][y[4]] = '#';
 	}
 
+	//Creates board
 	for (int row = 1; row < 26; row++)
 		for (int col = 1; col < 26; col++)
 			if (board[row][col] == '#')
